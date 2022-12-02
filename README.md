@@ -40,9 +40,9 @@ Website / Documentation: <https://www.fluffos.info>
 
 Forum: <https://forum.fluffos.info>
 
-QQ support Group: 451819151 [![451819151](https://pub.idqqimg.com/wpa/images/group.png)](https://shang.qq.com/wpa/qunwpa?idkey=3fd552adb8ace1a8e3ae3a712e5d314c7caf49af8b87449473c595b7e1f1ddf9)
+Discord Support: #fluffos on https://discord.gg/2a6qqG6Cdj
 
-Gitter Support: [![Gitter](https://badges.gitter.im/fluffos/community.svg)](https://gitter.im/fluffos/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+QQ support Group: 451819151 [![451819151](https://pub.idqqimg.com/wpa/images/group.png)](https://shang.qq.com/wpa/qunwpa?idkey=3fd552adb8ace1a8e3ae3a712e5d314c7caf49af8b87449473c595b7e1f1ddf9)
 
 How to Build
 ------------
@@ -66,6 +66,9 @@ Projects Using FluffOS
 ----------------------
 [Add Your Own](https://github.com/fluffos/fluffos/edit/master/README.md)
 
+-   [ThresholdRPG](https://wiki.thresholdrpg.com/)
+-   [SWmud](http://www.swmud.org/)
+
 Donations
 ---------
 I would like to personal thank all the sponsors and contributors for showing their support.
@@ -73,10 +76,6 @@ All donations are 100% used towards purchasing tools, equipments and hosting cos
  and forum hosting.
 
 The list is in descending order by time donation received.
-
-##### Received in 2020 Jan
-
-##### Received in 2020 Jan
 
 ##### Received in 2019 Jan
 

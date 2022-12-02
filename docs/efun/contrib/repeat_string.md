@@ -5,19 +5,19 @@ title: contrib / repeat_string.pre
 
 ### NAME
 
-    repeat_string
+    repeat_string() - repeat a string a certain number of times.
 
 ### SYNOPSIS
 
-    string repeat_string(string, int);
+    string repeat_string(string str, int repeats);
 
 ### DESCRIPTION
 
     returns a new string
 
-    - int <= 0: ""
-    - int > 0 original string repeated either int times or the maximum number of
-      times without getting greater than the maximum string length
+    - repeats <= 0: ""
+    - repeats > 0 original string repeated either int times or the maximum
+      number of times without getting greater than the maximum string length
 
     maxstrlen = 5:
     repeat_string("ab", 3) = "abab"

@@ -27,7 +27,7 @@ option(PACKAGE_SHA1 "sha1 package" ON)
 option(PACKAGE_SOCKETS "sockets package" ON)
 option(PACKAGE_TRIM "trim package" ON)
 option(PACKAGE_UIDS "uids package" ON)
-option(PACKAGE_EXTERNAL "external package" OFF)
+option(PACKAGE_EXTERNAL "external package" ON)
 option(DEBUG OFF)
 option(DEBUGMALLOC ${DEBUG})
 # End of list of compile options.
@@ -328,6 +328,7 @@ set(SRC
   "mainlib.cc"
   "user.cc"
   "symbol.cc"
+  "net/msp.cc"
   "net/tls.cc"
   "net/telnet.cc"
   "net/websocket.cc"
@@ -420,6 +421,7 @@ endif ()
 
 target_link_libraries(libdriver PUBLIC ghc_filesystem)
 
+add_compile_options("-DFMT_HEADER_ONLY=1")
 target_link_libraries(libdriver PRIVATE fmt::fmt-header-only)
 
 list(APPEND FLUFFOS_LIBRARIES autogen)

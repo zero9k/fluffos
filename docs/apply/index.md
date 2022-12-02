@@ -13,10 +13,16 @@ title: APPLY
 <div><a href='interactive/catch_tell.html'>catch_tell</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='interactive/gmcp_enable.html'>gmcp_enable</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/gmcp.html'>gmcp</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/logon.html'>logon</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='interactive/msp_enable.html'>msp_enable</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/net_dead.html'>net_dead</a></div>
@@ -180,6 +186,9 @@ title: APPLY
 <div><a href='object/init.html'>init</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='object/is_living.html'>is_living</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='object/move_or_destruct.html'>move_or_destruct</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
@@ -192,6 +201,6 @@ title: APPLY
 
 <div class="alert alert-info my-4" role="alert">
     <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/info.svg">
-    This page is auto generated on 2021-05-09 21:09:57 CST for v2019.20210429-15-g8827ca4b.</a>
+    This page is auto generated on 2022-07-06 16:19:27 CST for v2019.20220507-7-g64a2b14d-dirty.</a>
 </div>
 

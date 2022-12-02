@@ -5,7 +5,7 @@ title: efuns / strings / strlen
 
 ### NAME
 
-    strlen()
+    strlen() - return the number of UTF-8 characters in a supplied string
 
 ### SYNOPSIS
 
@@ -15,8 +15,9 @@ title: efuns / strings / strlen
 
     strlen() returns the number of characters in the string 'str'.
 
-    LPC strings are UTF-8 encoded. Driver calcuate numbers of characters according to the Unicode concept
-    "Extended Grapheme Cluster", as defined in "https://www.unicode.org/reports/tr29/".
+    LPC strings are UTF-8 encoded. Driver calcuate numbers of characters
+    according to the Unicode concept "Extended Grapheme Cluster", as defined in
+    "https://www.unicode.org/reports/tr29/".
 
     strlen("abc") == 3
     strlen("你好") == 2

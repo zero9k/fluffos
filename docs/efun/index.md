@@ -16,6 +16,9 @@ title: EFUN
 <div><a href='arrays/arrayp.html'>arrayp</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='arrays/element_of.html'>element_of</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='arrays/filter_array.html'>filter_array</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
@@ -26,6 +29,9 @@ title: EFUN
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='arrays/pointerp.html'>pointerp</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='arrays/shuffle.html'>shuffle</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='arrays/sort_array.html'>sort_array</a></div>
@@ -308,6 +314,16 @@ title: EFUN
 </div>
 
 <h2 class="border-bottom py-3 text-uppercase">
+  <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/bookmark.svg"><a class='text-secondary' name="external" href="#external">external</a>
+</h2>
+
+<div class='row'>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='external/external_start.html'>external_start</a></div>
+</div>
+</div>
+
+<h2 class="border-bottom py-3 text-uppercase">
   <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/bookmark.svg"><a class='text-secondary' name="filesystem" href="#filesystem">filesystem</a>
 </h2>
 
@@ -488,6 +504,9 @@ title: EFUN
 <div><a href='interactive/get_char.html'>get_char</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='interactive/has_gmcp.html'>has_gmcp</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/in_edit.html'>in_edit</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
@@ -542,6 +561,9 @@ title: EFUN
 <div><a href='interactive/say.html'>say</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='interactive/send_gmcp.html'>send_gmcp</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/set_encoding.html'>set_encoding</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
@@ -555,6 +577,9 @@ title: EFUN
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/telnet_ga.html'>telnet_ga</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='interactive/telnet_msp_oob.html'>telnet_msp_oob</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='interactive/telnet_nop.html'>telnet_nop</a></div>
@@ -851,7 +876,19 @@ title: EFUN
 
 <div class='row'>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='parsing/parse_add_rule.html'>parse_add_rule</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='parsing/parse_command.html'>parse_command</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='parsing/parse_init.html'>parse_init</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='parsing/parse_refresh.html'>parse_refresh</a></div>
+</div>
+<div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
+<div><a href='parsing/parse_sentence.html'>parse_sentence</a></div>
 </div>
 <div class='col-sm-4 col-md-3 col-lg-3 col-xl-2'>
 <div><a href='parsing/process_string.html'>process_string</a></div>
@@ -1107,6 +1144,6 @@ title: EFUN
 
 <div class="alert alert-info my-4" role="alert">
     <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/info.svg">
-    This page is auto generated on 2021-06-07 16:44:42 EDT for v2019.20210429-16-gd04c15db-dirty.</a>
+    This page is auto generated on 2022-11-07 21:42:34 EST for v2019.20210429-116-g24f357c7-dirty.</a>
 </div>
 

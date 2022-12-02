@@ -1805,7 +1805,7 @@ json get_trace_args(svalue_t *sp, int num_args) {
 }
 
 json get_trace_context(control_stack_t *csp, svalue_t *sp) {
-  json context = json::object();
+  auto context = json::object();
   if (CONFIG_INT(__RC_TRACE_CONTEXT__)) {
     if ((csp->framekind & FRAME_MASK) == FRAME_FUNCTION) {
       auto num_args = current_prog->function_table[csp->fr.table_index].num_arg;
@@ -2209,20 +2209,18 @@ void eval_instruction(char *p) {
         break;
       case F_LOR:
         /* replaces F_DUP; F_BRANCH_WHEN_NON_ZERO; F_POP */
-        if (sp->type == T_NUMBER) {
-          if (!sp->u.number) {
-            pc += 2;
-            sp--;
-            break;
-          }
+        if ((sp->type == T_NUMBER && !sp->u.number) || (sp->type == T_REAL && !sp->u.real)) {
+          pc += 2;
+          sp--;
+          break;
         }
         COPY_SHORT(&offset, pc);
         pc += offset;
         break;
       case F_LAND:
         /* replaces F_DUP; F_BRANCH_WHEN_ZERO; F_POP */
-        if (sp->type == T_NUMBER) {
-          if (!sp->u.number) {
+        if (sp->type == T_NUMBER || sp->type == T_REAL) {
+          if ((sp->type == T_NUMBER && !sp->u.number) || (sp->type == T_REAL && !sp->u.real)) {
             COPY_SHORT(&offset, pc);
             pc += offset;
             break;
@@ -4440,6 +4438,7 @@ int inter_sscanf(svalue_t *arg, svalue_t *s0, svalue_t *s1, int num_arg) {
           while (*tmp && (*tmp != '%')) {
             tmp++;
           }
+          number_of_matches--;
           break;
         case '(': {
           struct regexp *reg;

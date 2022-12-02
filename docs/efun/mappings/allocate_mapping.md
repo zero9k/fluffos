@@ -10,6 +10,7 @@ title: mappings / allocate_mapping
 ### SYNOPSIS
 
     mapping allocate_mapping( int size );
+    mapping allocate_mapping(mixed *key, mixed value);
 
 ### DESCRIPTION
 
@@ -36,7 +37,34 @@ title: mappings / allocate_mapping
     Note: at this point in time, 'size' is meaningless, x  =  allocate_map‐
     ping(200); is equivalent to x = ([ ]);
 
+    allocate_mapping(mixed *keys, mixed v):
+      - if value is an array, the returned array has keys 'keys' and values
+       'value' (like 3.2.x's mkmapping)
+      - if it is a function, the the mapping has keys 'keys' and values
+        evaluate(value, key)
+      - otherwise, each key has the value 'value'
+
+### EXAMPLE
+
+    allocate_mapping(0) ;
+    // ([ ])
+
+    allocate_mapping(25) ;
+    // ([ ])
+
+    allocate_mapping( ({ 1, 2, 3 }), ({ "one", "two", "three" }) )
+    // ([ 1 : "one", 2 : "two", 3 : "three" ])
+
+    allocate_mapping( users(), (: $1->query_name() :))
+    // ([
+    //     OBJ(karahd /std/user#9) : "Karahd",
+    //     OBJ(gesslar /std/user#2) : "Gesslar"
+    // ])
+
+    allocate_mapping( ({ "apple", "banana", "pear" }), 25)
+    // ([ "pear" : 25, "apple" : 25, "banana" : 25 ])
+
 ### SEE ALSO
 
-    map_delete(3)
+    map_delete(3), allocate(3)
 
