@@ -230,6 +230,7 @@ add_subdirectory(thirdparty/filesystem EXCLUDE_FROM_ALL)
 include_directories(thirdparty/filesystem/include)
 add_subdirectory(thirdparty/fmt EXCLUDE_FROM_ALL)
 include_directories(thirdparty/fmt/include)
+include_directories(SYSTEM thirdparty/json/include)
 add_subdirectory(thirdparty/backward-cpp EXCLUDE_FROM_ALL)
 
 set(DISABLE_WERROR ON CACHE BOOL "" FORCE)
@@ -313,14 +314,25 @@ add_custom_command(
   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/base/internal/options_incl.h"
 )
 
-find_package(BISON REQUIRED)
-BISON_TARGET(Grammar "${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/grammar.y" ${CMAKE_CURRENT_BINARY_DIR}/grammar.autogen.cc
-  DEFINES_FILE "${CMAKE_CURRENT_BINARY_DIR}/grammar.autogen.h")
-
-set(GENERATRED_GRAMMAR_FILES
-  "${BISON_Grammar_OUTPUT_SOURCE}"
-  "${BISON_Grammar_OUTPUT_HEADER}"
-  )
+find_package(BISON 3.8)
+if (${BISON_FOUND})
+  message(STATUS "BISON: ${BISON_VERSION}")
+  BISON_TARGET(Grammar "${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/grammar.y"
+          ${CMAKE_CURRENT_BINARY_DIR}/grammar.autogen.cc
+          DEFINES_FILE "${CMAKE_CURRENT_BINARY_DIR}/grammar.autogen.h"
+          COMPILE_FLAGS "-Wall --color=auto -rall"
+          VERBOSE REPORT_FILE "${CMAKE_CURRENT_BINARY_DIR}/grammar.report"
+          )
+  set(GENERATRED_GRAMMAR_FILES
+          "${BISON_Grammar_OUTPUT_SOURCE}"
+          "${BISON_Grammar_OUTPUT_HEADER}"
+          )
+else()
+  message(STATUS "BISON: version too low, using pre-generated source.")
+  set(GENERATRED_GRAMMAR_FILES
+          "${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/grammar.autogen.cc"
+          "${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/grammar.autogen.h")
+endif()
 
 set(SRC
   "backend.cc"
@@ -522,6 +534,14 @@ if (NOT WIN32)
   install(TARGETS portbind
     RUNTIME DESTINATION bin)
 endif ()
+
+# Update generated grammar files
+if (${BISON_FOUND})
+  add_custom_command(TARGET "driver" POST_BUILD
+          COMMAND "${CMAKE_COMMAND}" -E copy "${BISON_Grammar_OUTPUT_SOURCE}" ${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/
+          COMMAND "${CMAKE_COMMAND}" -E copy "${BISON_Grammar_OUTPUT_HEADER}" ${CMAKE_CURRENT_SOURCE_DIR}/compiler/internal/
+          COMMENT "Copying to output directory")
+endif()
 
 # Must keep this line at the end, so we get all the variables.
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)

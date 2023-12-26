@@ -15,16 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         build: ["Debug", "RelWithDebInfo"]
-        os: ["ubuntu-18.04"]
+        os: ["ubuntu-latest"]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install packages
         run: |
           sudo apt update
-          sudo apt install -y build-essential clang-6.0 autoconf automake bison expect libmysqlclient-dev libpcre3-dev libpq-dev libsqlite3-dev libssl-dev libtool libz-dev telnet libgtest-dev libjemalloc-dev
+          sudo apt install -y build-essential autoconf automake bison expect libmysqlclient-dev libpcre3-dev libpq-dev libsqlite3-dev libssl-dev libtool libz-dev telnet libgtest-dev libjemalloc-dev
       - name: configure
         run: |
           mkdir build
@@ -51,8 +51,8 @@ jobs:
             --form token=$TOKEN \
             --form email=sunyucong@gmail.com \
             --form file=@fluffos.tgz \
-            --form version="`git describe --tags --always` - ${{ matrix.build }}" \
-            --form description="`git describe --tags --always` - ${{ matrix.build }}" \
+            --form version="`git rev-parse HEAD` - ${{ matrix.build }}" \
+            --form description="`git rev-parse HEAD` - ${{ matrix.build }}" \
             https://scan.coverity.com/builds?project=fluffos%2Ffluffos
         env:
           TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}

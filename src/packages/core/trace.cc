@@ -17,19 +17,19 @@ void f_trace_start() {
     error("Invalid duration specified.");
   }
 
-  auto realfile = check_valid_path((sp - 1)->u.string, current_object, "trace_start", 1);
+  const auto *realfile = check_valid_path((sp - 1)->u.string, current_object, "trace_start", 1);
 
   if (!realfile) {
     error("Permission denied for trace file: %s", (sp - 1)->u.string);
   }
 
   // Used later in the block.
-  std::string filename(realfile);
+  std::string const filename(realfile);
 
   Tracer::start(filename.c_str());
   Tracer::setThreadName("FluffOS Main");
   // register closure.
-  add_walltime_event(std::chrono::seconds(duration_secs), tick_event::callback_type([] {
+  add_walltime_event(std::chrono::seconds(duration_secs), TickEvent::callback_type([] {
                        if (Tracer::enabled()) {
                          Tracer::collect();
                        }

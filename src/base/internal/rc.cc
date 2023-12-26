@@ -14,7 +14,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stdlib.h>  // for exit
+#include <cstdlib>  // for exit
 #include <string>
 
 #include "base/internal/external_port.h"
@@ -28,10 +28,10 @@ char *external_cmd[g_num_external_cmds];
 
 namespace {
 
-const int kMaxConfigLineLength = 120;
+const int K_MAX_CONFIG_LINE_LENGTH = 120;
 std::deque<std::string> config_lines;
 
-struct flagEntry {
+struct FlagEntry {
   std::string key;
   int pos;
   int defaultValue;
@@ -39,7 +39,7 @@ struct flagEntry {
   int maxValue = INT_MAX;
 };
 
-const flagEntry intFlags[] = {
+const FlagEntry INT_FLAGS[] = {
     {"time to clean up", __TIME_TO_CLEAN_UP__, 600},
     {"time to reset", __TIME_TO_RESET__, 900},
     {"time to swap", __TIME_TO_SWAP__, 300},
@@ -116,7 +116,7 @@ void config_init() {
   }
 
   // populate default value for int flags.
-  for (const auto &flag : intFlags) {
+  for (const auto &flag : INT_FLAGS) {
     CONFIG_INT(flag.pos) = flag.defaultValue;
   }
 }
@@ -136,7 +136,7 @@ void config_init() {
 const int kMustHave = 1;
 const int kOptional = 0;
 const int kWarnMissing = -1;
-const int kWarnFound = -2;
+const int K_WARN_FOUND = -2;
 
 bool scan_config_line(const char *fmt, void *dest, int required) {
   /* zero the destination.  It is either a pointer to an int or a char
@@ -159,28 +159,28 @@ bool scan_config_line(const char *fmt, void *dest, int required) {
 
   if (found) {
     switch (required) {
-      case kWarnFound:
+      case K_WARN_FOUND:
         // obsolete
         debug_message("*Warning: obsolete line in config file, please delete:\n\t%s\n",
                       line.c_str());
         return false;
     }
     return true;
-  } else {
-    switch (required) {
-      case kWarnMissing:
-        // optional but warn
-        debug_message("*Warning: Missing line in config file:\n\t%s\n", line.c_str());
-        return false;
-      case kOptional:
-        // optional
-        return false;
-      case kMustHave:
-        // required
-        debug_message("*Error in config file.  Missing line:\n\t%s\n", line.c_str());
-        exit(-1);
-    }
   }
+  switch (required) {
+    case kWarnMissing:
+      // optional but warn
+      debug_message("*Warning: Missing line in config file:\n\t%s\n", line.c_str());
+      return false;
+    case kOptional:
+      // optional
+      return false;
+    case kMustHave:
+      // required
+      debug_message("*Error in config file.  Missing line:\n\t%s\n", line.c_str());
+      exit(-1);
+  }
+
   return false;
 }
 
@@ -200,9 +200,9 @@ void read_config(char *filename) {
   std::stringstream buffer;
   buffer << f.rdbuf();
 
-  char tmp[kMaxConfigLineLength];
+  char tmp[K_MAX_CONFIG_LINE_LENGTH];
   while (buffer.getline(&tmp[0], sizeof(tmp), '\n')) {
-    if (strlen(tmp) == kMaxConfigLineLength - 1) {
+    if (strlen(tmp) == K_MAX_CONFIG_LINE_LENGTH - 1) {
       debug_message("*Warning: possible truncated config line: %s\n", tmp);
     }
 
@@ -225,7 +225,7 @@ void read_config(char *filename) {
     scan_config_line("global include file : %[^\n]", tmp, 0);
 
     /* check if the global include file is quoted */
-    std::string v(tmp);
+    std::string const v(tmp);
     if (!starts_with(v, "\"") && !starts_with(v, "<")) {
       debug_message("Missing '\"' or '<' around global include file name; adding quotes.\n");
       // not very efficient, but who cares.
@@ -265,7 +265,7 @@ void read_config(char *filename) {
     if (strlen(tmp) == 0) {
       strcpy(tmp, "What?\n");
     }
-    if (strlen(tmp) <= kMaxConfigLineLength - 2) {
+    if (strlen(tmp) <= K_MAX_CONFIG_LINE_LENGTH - 2) {
       strcat(tmp, "\n");
     }
     CONFIG_STR(__DEFAULT_FAIL_MESSAGE__) = alloc_cstring(tmp, "config file: dfm");
@@ -279,14 +279,14 @@ void read_config(char *filename) {
     int i, port, port_start = 0;
     if (scan_config_line("port number : %d\n", &CONFIG_INT(__MUD_PORT__), 0)) {
       external_port[0].port = CONFIG_INT(__MUD_PORT__);
-      external_port[0].kind = PORT_TELNET;
+      external_port[0].kind = PORT_TYPE_TELNET;
       port_start = 1;
     }
 
     /* check for ports */
     if (port_start == 1) {
       if (scan_config_line("external_port_1 : %[^\n]", tmp, 0)) {
-        int port = CONFIG_INT(__MUD_PORT__);
+        int const port = CONFIG_INT(__MUD_PORT__);
         debug_message(
             "Warning: external_port_1 already defined to be 'telnet %i' by "
             "the line\n    'port number : %i'; ignoring the line "
@@ -295,24 +295,24 @@ void read_config(char *filename) {
       }
     }
     for (i = port_start; i < 5; i++) {
-      external_port[i].kind = 0;
+      external_port[i].kind = PORT_TYPE_UNDEFINED;
       external_port[i].fd = -1;
 
-      char kind[kMaxConfigLineLength];
+      char kind[K_MAX_CONFIG_LINE_LENGTH];
       sprintf(kind, "external_port_%i : %%[^\n]", i + 1);
       if (scan_config_line(kind, tmp, 0)) {
         if (sscanf(tmp, "%s %d", kind, &port) == 2) {
           external_port[i].port = port;
           if (!strcmp(kind, "telnet")) {
-            external_port[i].kind = PORT_TELNET;
+            external_port[i].kind = PORT_TYPE_TELNET;
           } else if (!strcmp(kind, "binary")) {
-            external_port[i].kind = PORT_BINARY;
+            external_port[i].kind = PORT_TYPE_BINARY;
           } else if (!strcmp(kind, "ascii")) {
-            external_port[i].kind = PORT_ASCII;
+            external_port[i].kind = PORT_TYPE_ASCII;
           } else if (!strcmp(kind, "MUD")) {
-            external_port[i].kind = PORT_MUD;
+            external_port[i].kind = PORT_TYPE_MUD;
           } else if (!strcmp(kind, "websocket")) {
-            external_port[i].kind = PORT_WEBSOCKET;
+            external_port[i].kind = PORT_TYPE_WEBSOCKET;
             if (!CONFIG_STR(__RC_WEBSOCKET_HTTP_DIR__)) {
               scan_config_line("websocket http dir : %[^\n]", tmp, kMustHave);
               CONFIG_STR(__RC_WEBSOCKET_HTTP_DIR__) = alloc_cstring(tmp, "config file: whd");
@@ -329,8 +329,8 @@ void read_config(char *filename) {
     }
     // TLS support status
     for (i = port_start; i < 5; i++) {
-      if (external_port[i].kind != 0) {
-        char kind[kMaxConfigLineLength];
+      if (external_port[i].kind != PORT_TYPE_UNDEFINED) {
+        char kind[K_MAX_CONFIG_LINE_LENGTH];
         sprintf(kind, "external_port_%i_tls : %%[^\n]", i + 1);
         if (scan_config_line(kind, tmp, 0)) {
           char cert[255 + 1]{}, key[255 + 1]{};
@@ -349,14 +349,14 @@ void read_config(char *filename) {
 #ifdef PACKAGE_EXTERNAL
   /* check for commands */
   {
-    char kind[kMaxConfigLineLength];
+    char kind[K_MAX_CONFIG_LINE_LENGTH];
 
     for (int i = 0; i < g_num_external_cmds; i++) {
       sprintf(kind, "external_cmd_%i : %%[^\n]", i + 1);
       if (scan_config_line(kind, tmp, 0)) {
         external_cmd[i] = alloc_cstring(tmp, "external cmd");
       } else {
-        external_cmd[i] = 0;
+        external_cmd[i] = nullptr;
       }
     }
   }
@@ -368,8 +368,8 @@ void read_config(char *filename) {
   scan_config_line("reserved size : %d\n", tmp, -2);
   scan_config_line("fd6 kind : %[^\n]", tmp, -2);
   scan_config_line("fd6 port : %d\n", tmp, -2);
-  scan_config_line("binary directory : %[^\n]", tmp, kWarnFound);
-  scan_config_line("swap file : %[^\n]", tmp, kWarnFound);
+  scan_config_line("binary directory : %[^\n]", tmp, K_WARN_FOUND);
+  scan_config_line("swap file : %[^\n]", tmp, K_WARN_FOUND);
 
   // Give all obsolete (thus untouched) config strings a value.
   for (auto &i : config_str) {
@@ -379,7 +379,7 @@ void read_config(char *filename) {
   }
 
   // process int flags
-  for (const auto &flag : intFlags) {
+  for (const auto &flag : INT_FLAGS) {
     int value = 0;
     char buf[256];
     sprintf(buf, "%s : %%d\n", flag.key.c_str());
@@ -400,7 +400,7 @@ void read_config(char *filename) {
 }
 
 void print_rc_table() {
-  for (const auto &flag : intFlags) {
+  for (const auto &flag : INT_FLAGS) {
     auto val = CONFIG_INT(flag.pos);
     if (val != flag.defaultValue) {
       debug_message("%s : %d # default: %d\n", flag.key.c_str(), val, flag.defaultValue);

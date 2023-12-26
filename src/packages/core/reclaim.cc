@@ -13,7 +13,7 @@
 
 #include "packages/core/call_out.h"
 
-#define MAX_RECURSION 25
+enum { MAX_RECURSION = 25 };
 
 static void gc_mapping(mapping_t * /*m*/);
 static void check_svalue(svalue_t * /*v*/);
@@ -70,7 +70,6 @@ static void check_svalue(svalue_t *v) {
     }
   }
   nested--;
-  return;
 }
 
 static void gc_mapping(mapping_t *m) {
@@ -112,7 +111,7 @@ static void gc_mapping(mapping_t *m) {
 int reclaim_objects(bool is_auto) {
   if (is_auto) {
     add_gametick_event(time_to_next_gametick(std::chrono::seconds(30 + random_number(30))),
-                       tick_event::callback_type([] { return reclaim_objects(true); }));
+                       TickEvent::callback_type([] { return reclaim_objects(true); }));
   }
   int i;
   object_t *ob;
